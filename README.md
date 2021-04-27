@@ -1,2 +1,2 @@
 # scrapy-journal
-Crawling some site do create an API
+Crawling some site to create an API
