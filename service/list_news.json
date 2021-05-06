@@ -1,68 +1,78 @@
 [
     {
+       "id": 1,
        "url_path":"/esportes/2021/04/121359-internacional-se-recupera-na-libertadores-com-vitoria-sobre-tachira.html",
        "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_2021_04_28t005951z_1681485787_hp1eh4s02ro34_rtrmadp_3_soccer_libertadores_inl_dta_report-397538.jpg",
        "title":"Internacional se recupera na Libertadores com vit\u00f3ria sobre T\u00e1chira",
        "subtitle":"O Internacional superou o Deportivo T\u00e1chira (Venezuela) por 4 a 0 nesta ter\u00e7a-feira (27) no est\u00e1dio do Beira Rio, em Porto Alegre. Com o primeiro triunfo na atual edi\u00e7\u00e3o da competi\u00e7\u00e3o, o Colo...",
        "time":"27 de Abril, 2021 \u00e0s 23:59"
     },
-    {
+    {       
+       "id": 2,
        "url_path":"/esportes/2021/04/121358-libertadores-santos-e-superado-pelo-boca-na-bombonera.html",
        "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_2021_04_28t020132z_1458522301_hp1eh4s05mh4n_rtrmadp_3_soccer_libertadores_boj_sts_report-397528.jpg",
        "title":"Libertadores: Santos \u00e9 superado pelo Boca na Bombonera",
        "subtitle":"No primeiro jogo ap\u00f3s a sa\u00edda do t\u00e9cnico argentino Ariel Holan, o Santos foi derrotado por 2 a 0 pelo Boca Juniors (Argentina), em partida realizada nesta ter\u00e7a-feira (27) no est\u00e1dio da Bombone...",
        "time":"27 de Abril, 2021 \u00e0s 23:48"
     },
-    {
+    {       
+       "id": 3,
        "url_path":"/esportes/2021/04/121355-palmeiras-mantem-100--de-aproveitamento-na-libertadores.html",
        "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_2021_04_28t020737z_831140317_hp1eh4s05wn4w_rtrmadp_3_soccer_libertadores_pal_idl_report-397498.jpg",
        "title":"Palmeiras mant\u00e9m 100% de aproveitamento na Libertadores",
        "subtitle":"O Palmeiras manteve 100% de aproveitamento na atual edi\u00e7\u00e3o da Libertadores ap\u00f3s golear, nesta ter\u00e7a-feira (27) em S\u00e3o Paulo, o Independiente del Valle (Equador) por 5 a 0 em jogo do Grupo A. Co...",
        "time":"27 de Abril, 2021 \u00e0s 23:35"
     },
-    {
+    {       
+       "id": 4,
        "url_path":"/politica/2021/04/121354-senado-aprova-extensao-de-validade-de-prescricao-medica-para-gestantes.html",
        "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_img20210419125017730-397488.jpg",
        "title":"Senado aprova extens\u00e3o de validade de prescri\u00e7\u00e3o m\u00e9dica para gestantes",
        "subtitle":"O Senado aprovou hoje (27) um projeto de lei (PL) que autoriza a prorroga\u00e7\u00e3o da validade de prescri\u00e7\u00f5es m\u00e9dicas e pedidos de exames complementares de diagn\u00f3stico para gr\u00e1vidas e mulheres no p...",
        "time":"27 de Abril, 2021 \u00e0s 23:09"
     },
-    {
+    {       
+       "id": 5,
        "url_path":"/economia/2021/04/121352-guedes-nega-pressao-politica-para-trocar-secretarios.html",
        "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_coletiva_paulo_guedes_mcamgo_abr_080320211818-397478.jpg",
        "title":"Guedes nega press\u00e3o pol\u00edtica para trocar secret\u00e1rios",
        "subtitle":"Minutos depois de confirmar a substitui\u00e7\u00e3o de tr\u00eas secret\u00e1rios e uma assessora especial, o ministro da Economia, Paulo Guedes, negou que a troca tenha ocorrido por press\u00f5es pol\u00edticas. Em entre...",
        "time":"27 de Abril, 2021 \u00e0s 22:34"
     },
-    {
+    {       
+       "id": 6,
        "url_path":"/esportes/2021/04/121351-bahia-goleia-por-5-a-0-na-sul-americana.html",
-       "url_image":null,
+       "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_2021_04_28t020132z_1458522301_hp1eh4s05mh4n_rtrmadp_3_soccer_libertadores_boj_sts_report-397528.jpg",
        "title":"Bahia goleia por 5 a 0 na Sul-Americana",
        "subtitle":"Jogando no est\u00e1dio de Pitua\u00e7u na noite desta ter\u00e7a-feira (27), o Bahia goleou o Guabir\u00e1 (Bol\u00edvia) por 5 a 0 e assumiu a lideran\u00e7a do Grupo B da Copa Sul-Americana com 4 pontos.\n\n\n???????? 5 a ...",
        "time":"27 de Abril, 2021 \u00e0s 22:09"
     },
-    {
+    {       
+       "id": 7,
        "url_path":"/esportes/2021/04/121350-libertadores-flamengo-goleia-la-calera-por-4-a-1-no-maracana.html",
-       "url_image":null,
+       "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_2021_04_28t020132z_1458522301_hp1eh4s05mh4n_rtrmadp_3_soccer_libertadores_boj_sts_report-397528.jpg",
        "title":"Libertadores: Flamengo goleia La Calera por 4 a 1 no Maracan\u00e3",
        "subtitle":"Em sua primeira partida em casa na atual edi\u00e7\u00e3o da Ta\u00e7a Libertadores, o Flamengo derrotou o Uni\u00f3n La Calera (Chile) por 4 a 1 nesta ter\u00e7a-feira (27) no est\u00e1dio do Maracan\u00e3. Com este triunfo, ...",
        "time":"27 de Abril, 2021 \u00e0s 21:59"
     },
-    {
+    {       
+       "id": 8,
        "url_path":"/ultimas/2021/04/121349-governo-dos-eua-autoriza-viagem-de-brasileiros-que-estudam-no-pais.html",
-       "url_image":null,
+       "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_2021_04_28t020132z_1458522301_hp1eh4s05mh4n_rtrmadp_3_soccer_libertadores_boj_sts_report-397528.jpg",
        "title":"Governo dos EUA autoriza viagem de brasileiros que estudam no pa\u00eds",
        "subtitle":"Brasileiros com visto de estudante v\u00e1lido e matriculados em institui\u00e7\u00f5es de ensino dos Estados Unidos poder\u00e3o embarcar para o pa\u00eds norte-americano nos pr\u00f3ximos meses. A amplia\u00e7\u00e3o das Exce\u00e7\ufffd...",
        "time":"27 de Abril, 2021 \u00e0s 21:59"
     },
-    {
+    {       
+       "id": 9,
        "url_path":"/esportes/2021/04/121348-atletico-mg-derrota-america-de-cali-na-libertadores.html",
        "url_image":null,
        "title":"Atl\u00e9tico-MG derrota Am\u00e9rica de Cali na Libertadores",
        "subtitle":"O Atl\u00e9tico-MG derrotou o Am\u00e9rica de Cali (Col\u00f4mbia) por 2 a 1, na noite desta ter\u00e7a-feira (27) no est\u00e1dio do Mineir\u00e3o, e assumiu a lideran\u00e7a do Grupo H da Copa Libertadores com 4 pontos.\n\n\n??...",
        "time":"27 de Abril, 2021 \u00e0s 21:59"
     },
-    {
+    {       
+       "id": 10,
        "url_path":"/economia/2021/04/121347-secretario-do-tesouro-assume-secretaria-especial-de-fazenda.html",
        "url_image":"https://www.jj.com.br/_midias/jpg/2021/04/27/300x225/1_antcrz_abr_06051915159-397468.jpg",
        "title":"Secret\u00e1rio do Tesouro assume Secretaria Especial de Fazenda",
