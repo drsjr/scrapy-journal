@@ -12,6 +12,17 @@ BOT_NAME = 'journal'
 SPIDER_MODULES = ['journal.spiders']
 NEWSPIDER_MODULE = 'journal.spiders'
 
+POSTGRES_HOSTNAME = "172.17.0.2"
+POSTGRES_PORT = 5432
+POSTGRES_USERNAME = "folha"
+POSTGRES_PASSWORD = "folha"
+POSTGRES_DBNAME = "journal_jj"
+
+ITEM_PIPELINES = { 
+    'journal.pipelines.JournalPipeline': 200
+}
+
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'journal (+http://www.yourdomain.com)'

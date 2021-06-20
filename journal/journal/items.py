@@ -10,3 +10,8 @@ class JournalItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+
+class PrincipalItem(scrapy.Item):
+    main_news = scrapy.Field()
+    carrossel = scrapy.Field()
+    column_news = scrapy.Field()
