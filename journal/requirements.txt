@@ -1,0 +1,4 @@
+scrapy==2.4.1
+scrapyd==1.2.0
+psycopg2-binary
+git+https://github.com/scrapy/scrapyd-client.git
