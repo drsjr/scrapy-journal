@@ -15,3 +15,9 @@ class PrincipalItem(scrapy.Item):
     main_news = scrapy.Field()
     carrossel = scrapy.Field()
     column_news = scrapy.Field()
+
+
+class CategoryItem(scrapy.Item):
+    news = scrapy.Field()
+    category = scrapy.Field()
+
