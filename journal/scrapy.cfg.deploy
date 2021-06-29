@@ -1,0 +1,28 @@
+# Automatically created by: scrapy startproject
+#
+# For more information about the [deploy] section see:
+# https://scrapyd.readthedocs.io/en/latest/deploy.html
+
+[settings]
+default = journal.settings
+
+[deploy]
+url = http://0.0.0.0:6800/
+project = journal
+
+[scrapyd]
+eggs_dir = eggs
+logs_dir = logs
+jobs_to_keep = 5
+dbs_dir = dbs
+max_proc = 1
+max_proc_per_cpu = 2
+finished_to_keep = 100
+poll_interval = 5.0
+bind_address = 0.0.0.0
+http_port = 6800
+debug = off
+runner = scrapyd.runner
+application = scrapyd.app.application
+launcher = scrapyd.launcher.Launcher
+webroot = scrapyd.website.Root
