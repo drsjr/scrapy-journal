@@ -9,6 +9,10 @@ locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 class CategoriesSpider(scrapy.Spider):
     name = 'categories'
 
+    def __init__(self, *args, **kwargs):
+        super(CategoriesSpider, self).__init__(*args, **kwargs)
+        self.category = kwargs.get('category')
+
     def start_requests(self):
         print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", self.category)
         yield scrapy.Request(f'https://www.jj.com.br/{self.category}')
