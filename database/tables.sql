@@ -16,6 +16,6 @@ CREATE TABLE users (
     username TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "disabled" BOOLEAN NOT NULL DEFAULT FALSE,
-    ful_name TEXT NOT NULL,
+    full_name TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

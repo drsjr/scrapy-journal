@@ -2,7 +2,7 @@
 from fastapi import Depends, FastAPI, HTTPException, status
 from datetime import timedelta
 from fastapi.security import OAuth2PasswordRequestForm
-from auth import Token, User
+from model import Token, User
 
 import auth
 import json
@@ -14,8 +14,8 @@ list_news = json.loads(open("list_news.json", "r").read())
 list_articles = json.loads(open("list_article.json", "r").read())
 
 
-@app.get("/news/{news_id}")
-def article(news_id: int):
+@app.get("/news/{news_id}", response_model=User)
+async def article(news_id: int, current_user: User = Depends(auth.get_current_active_user)):
     return get_article_by_id(news_id)
 
 
@@ -37,7 +37,7 @@ def get_article_by_id(id: int):
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = auth.authenticate_user(auth.fake_user_db, form_data.username, form_data.password)
+    user = auth.authenticate_user(auth.repo, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

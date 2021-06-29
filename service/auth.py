@@ -1,42 +1,19 @@
 from datetime import datetime, timedelta
+from database import Database, UserRepository, UserRepository
 from typing import Optional
+
+from model import TokenData, User, UserInDB
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from pydantic import BaseModel
 
 SECRET_KEY = "752b3f39e938f67f65de56f2500f5eadddc1443f04ccaa"
 ALGO = "HS256"
 ACCESS_TOKE_EXPIRE_MINUTES = 10
 
-fake_user_db = { 
-    "joaosilva":{
-        "username": "joaosilva",
-        "full_name": "Joao Silva",
-        "email": "joao@example.com",
-        "hashed_password": "$2b$12$OhUOG1K7sxtqjRSAk2bxWuF70WwFssEvduf4BTaQ8JvA7h.GJHo3y", #test
-        "disabled": False
-    }
-}
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-class TokenData(BaseModel):
-    username: Optional[str] = None
-
-class User(BaseModel):
-    username: str
-    email: Optional[str] = None
-    full_name: Optional[str] = None
-    dasabled: Optional[bool] = None
-
-class UserInDB(User):
-    hashed_password: str
+repo = UserRepository(Database())
 
 pwd_context = CryptContext(schemes=["bcrypt"])
 
@@ -46,17 +23,17 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
+def get_user(repo: UserRepository, username: str):
+    user = repo.get_query_by_username(username)
+    if user is not None: 
+        return UserInDB(**dict(user))
 
-def authenticate_user(fake_db, username: str, password: str):
-    user = get_user(fake_db, username)
+def authenticate_user(repo: UserRepository, username: str, password: str):
+    user = get_user(repo, username)
     if not user:
         return False
 
-    if not verify_password(password, user.hashed_password):
+    if not verify_password(password, user.password):
         return False
     return user
 
