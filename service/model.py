@@ -17,3 +17,13 @@ class TokenData(BaseModel):
 
 class UserInDB(User):
     password: str
+    disabled: bool
+
+class News(BaseModel):
+    id: int
+    url_path: str
+    url_image: str
+    title: str
+    subtitle: str
+    time: str
+    category: str

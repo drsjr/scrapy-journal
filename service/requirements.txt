@@ -1,0 +1,5 @@
+python-jose==3.3.0
+fastapi==0.63.0
+uvicorn==0.13.3
+passlib==1.7.4
+jinja2==2.11.2

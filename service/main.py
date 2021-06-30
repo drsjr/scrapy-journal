@@ -10,26 +10,6 @@ import json
 app = FastAPI()
 
 
-list_news = json.loads(open("list_news.json", "r").read())
-list_articles = json.loads(open("list_article.json", "r").read())
-
-
-@app.get("/news/{news_id}", response_model=User)
-async def article(news_id: int, current_user: User = Depends(auth.get_current_active_user)):
-    return get_article_by_id(news_id)
-
-
-@app.get("/news")
-def news():
-    return get_list_news()
-
-def get_list_news():
-    return list_news
-
-def get_article_by_id(id: int):
-    return list_articles[id]
-
-
 
 #####################################
 #   Authentication Section          #
@@ -57,6 +37,10 @@ async def read_users_me(current_user: User = Depends(auth.get_current_active_use
 @app.get("/users/me/items")
 async def read_own_items(current_user: User = Depends(auth.get_current_active_user)):
     return [{"item_id": "Too", "owner": current_user.full_name}]
+
+@app.get("/news/{category}")
+async def news(category: str = 'ultimas', offset: int = 0, limit: int = 5, current_user: User = Depends(auth.get_current_active_user)):
+    return await auth.get_new_by_category(category=category, offset=offset, limit=limit)
 
 
 
