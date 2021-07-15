@@ -4,12 +4,21 @@ CREATE TABLE principal (
     main_page JSONB NOT NULL
 );
 
-CREATE TABLE category (
+CREATE TABLE news (
     _id SERIAL PRIMARY KEY,
     created_at TIMESTAMP NOT NULL,
     category TEXT NOT NULL,
-    news JSONB NOT NULLb
+    news JSONB NOT NULL
 );
+
+CREATE TABLE category (
+    _id SERIAL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "path" TEXT NOT NULL,
+    code INTEGER NOT NULL,
+    is_enable BOOLEAN NOT NULL DEFAULT TRUE
+);
+
 
 CREATE TABLE users (
     _id SERIAL PRIMARY KEY,
