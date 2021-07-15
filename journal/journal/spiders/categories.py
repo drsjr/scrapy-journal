@@ -1,4 +1,4 @@
-from journal.items import CategoryItem
+from journal.items import NewsItem
 from datetime import datetime
 import scrapy
 import locale
@@ -19,7 +19,7 @@ class CategoriesSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        item = CategoryItem()
+        item = NewsItem()
         item["category"] = self.category
         item["news"] = []
         divs = response.css('div.clearfix')

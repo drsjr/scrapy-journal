@@ -17,7 +17,7 @@ class PrincipalItem(scrapy.Item):
     column_news = scrapy.Field()
 
 
-class CategoryItem(scrapy.Item):
+class NewsItem(scrapy.Item):
     news = scrapy.Field()
     category = scrapy.Field()
 
