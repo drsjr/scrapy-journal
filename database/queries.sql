@@ -8,4 +8,14 @@ FROM category c
 WHERE c.category = 'ultimas'
 GROUP BY c._id, c.news->'url_path' 
 ORDER BY c._id DESC
-OFFSET 0 FETCH NEXT 5 ROW ONLY
+OFFSET 0 FETCH NEXT 5 ROW ONLY;
+
+-- Get all Categories
+
+SELECT 
+    _id,
+    "name",
+    path,
+    code
+FROM category WHERE
+is_enable = true;
