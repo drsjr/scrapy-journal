@@ -1,45 +1,30 @@
 import scrapy
+from journal.items import ArticleItem
+import journal.date_util as util
+import locale
 
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8') 
 
 class ArticleSpider(scrapy.Spider):
     name = 'article'
 
+    def __init__(self, *args, **kwargs):
+        super(ArticleSpider, self).__init__(*args, **kwargs)
+        self.category = kwargs.get('category')
+
     def start_requests(self):
         print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", self.category)
-        yield scrapy.Request(f'https://www.jj.com.br/{self.category}')
-
-
-    #def parse(self, response):
-        #divs = response.css('div.clearfix')
-        #content = divs[0]
-        #all_urls = []
-        #for content in divs:
-        #    url_path = content.css('div.entry-title h2 a').xpath('@href').get()
-        #    url_image = content.css('div.entry-image a img').xpath('@src').get()
-        #    news_title = content.css('div.entry-title h2 a::text').get()
-        #    news_time = content.css('ul.entry-meta li::text').get().strip()
-        #    news_subtitle = content.css('div.entry-content p::text').get().strip()
-        #    all_urls.append(url_path)
-
-            #yield {
-            #    'url_path': url_path,
-            #    'url_image': url_image,
-            #    'title': news_title,
-            #    'subtitle': news_subtitle,
-            #    'time': news_time
-            #}
-        
-
-
-        #for url in all_urls:
-        #    yield scrapy.Request('https://www.jj.com.br{0}'.format(url), callback=self.parse_news_content)
-        #pass
+        yield scrapy.Request(f'https://www.jj.com.br{self.category}')
 
     def parse(self, response):
+        item = ArticleItem()
 
-        article = {
-            'url': response.url,
-            'tag': '',
+        item['url'] = self.category
+        item['category'] = response.css('div.container h1::text').get(default='').strip()
+
+        item['news'] = {
+            'url': self.category,
+            'category': response.css('div.container h1::text').get(default='').strip(),
             'title': '',
             'subtitle': '',
             'time': '',
@@ -47,23 +32,23 @@ class ArticleSpider(scrapy.Spider):
             'paragraphs': []
         }
 
-        article['tag'] = response.css('div.container h1::text').get(default='').strip()
-
         if len(response.xpath('//section[@id="content"]')) > 0 and response.xpath('//section[@id="content"]')[0] is not None:
             content = response.xpath('//section[@id="content"]')[0]
 
-            article['title'] = content.css('div.entry-title h2::text').get(default='')
-            article['subtitle'] = content.css('div.entry-title h3::text').get(default='')
+            item['news']['title'] = content.css('div.entry-title h2::text').get(default='')
+            item['news']['subtitle'] = content.css('div.entry-title h3::text').get(default='')
 
             if len(content.css('ul.entry-meta li')) > 0:
-                article['time'] = content.css('ul.entry-meta li::text')[0].get().strip()
+                _date = util.format_date(content.css('ul.entry-meta li::text')[0].get().strip())
+                item['created_at'] = _date
+                item['news']['time'] = _date
 
             if len(content.css('div.entry-image a img')) > 0:
-                article['url_image'] = content.css('div.entry-image a img')[0].xpath('@src').get()
+                item['news']['url_image'] = content.css('div.entry-image a img')[0].xpath('@src').get(default='')
 
-            article['paragraphs'] = content.css('p.texto::text').getall()
+            item['news']['paragraphs'] = content.css('p.texto::text').getall()
 
-            yield article
+            yield item
 
         else:
             pass

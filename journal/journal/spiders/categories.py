@@ -1,5 +1,5 @@
 from journal.items import NewsItem
-from datetime import datetime
+import journal.date_util as util
 import scrapy
 import locale
 
@@ -25,11 +25,11 @@ class CategoriesSpider(scrapy.Spider):
         divs = response.css('div.clearfix')
         content = divs[0]
         for content in divs:
-            news ={
+            news = {
                 "url_path": content.css('div.entry-title h2 a').xpath('@href').get(),
                 "url_image": content.css('div.entry-image a img').xpath('@src').get(),
                 "news_title": content.css('div.entry-title h2 a::text').get(),
-                "news_time": format_date(content.css('ul.entry-meta li::text').get()),
+                "news_time": util.format_date(content.css('ul.entry-meta li::text').get()),
                 "news_subtitle": content.css('div.entry-content p::text').get()
             }
 
@@ -39,17 +39,3 @@ class CategoriesSpider(scrapy.Spider):
             item["news"].append(news)
 
         yield  item
-
-
-
-
-def format_date(d: str):
-    if d is None or len(d.strip()) == 0:
-        return ""
-
-    try:
-        parse = datetime.strptime(d.strip(), "%d de %B, %Y às %H:%M")
-        return datetime.strftime(parse, "%Y-%m-%d %H:%M:%S")
-    except Exception:
-        pass
-

@@ -21,3 +21,16 @@ class NewsItem(scrapy.Item):
     news = scrapy.Field()
     category = scrapy.Field()
 
+class ArticleItem(scrapy.Item):
+    url = scrapy.Field()
+    category = scrapy.Field()
+    created_at = scrapy.Field()
+    news = scrapy.Field()
+
+class FrontItem(scrapy.Item):
+    main_news = scrapy.Field()
+    carrossel = scrapy.Field()
+    column_news = scrapy.Field()
+
+
+
