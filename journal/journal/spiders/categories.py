@@ -3,7 +3,6 @@ import journal.date_util as util
 import scrapy
 import locale
 
-
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8') 
 
 class CategoriesSpider(scrapy.Spider):
@@ -38,4 +37,4 @@ class CategoriesSpider(scrapy.Spider):
 
             item["news"].append(news)
 
-        yield  item
+        yield item

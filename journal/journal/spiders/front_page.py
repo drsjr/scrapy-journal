@@ -22,6 +22,7 @@ class FrontPageSpider(scrapy.Spider):
         main_page["main_news"]["url"] = row.css('div.col_full h2 a').xpath('@href').get()
 
         # Scrapy News Column Main Page
+        
         column_news = row.css('div.col_one_third div.ipost')
         for item in column_news:
             news = {
