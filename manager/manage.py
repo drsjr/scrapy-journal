@@ -25,12 +25,7 @@ principal_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d p
 categories = [ 'ultimas', 'jundiai', 'opiniao', 'politica', 'economia', 'policia', 'esportes', 'cultura', 'hype']
 front_page_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=frontpage'
 
-
-urls = ['/jundiai/2021/08/129952-jundiaienses-vao-as-ruas-neste-domingo-pelo-voto-impresso.html']
-
-
 article_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=article -d category={0}'
-
 
 
 def call_all_categories():
@@ -39,10 +34,6 @@ def call_all_categories():
 
 def call_principal():
     os.system(principal_spider_api_call_local)
-
-def call_search_article():
-    for c in urls:
-        os.system(article_spider_api_call_local.format(c))
 
 def call_front_page():
     os.system(front_page_spider_api_call_local)
