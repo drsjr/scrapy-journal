@@ -16,7 +16,7 @@ POSTGRES_HOSTNAME = "192.168.15.35"
 POSTGRES_PORT = 5432
 POSTGRES_USERNAME = "folha"
 POSTGRES_PASSWORD = "folha"
-POSTGRES_DBNAME = "folha"
+POSTGRES_DBNAME = "scrapy_jj"
 
 ITEM_PIPELINES = { 
     'journal.pipelines.JournalPipeline': 200

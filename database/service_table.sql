@@ -13,7 +13,7 @@ CREATE TABLE category (
     "name" TEXT NOT NULL,
     "path" TEXT NOT NULL,
     code INT NOT NULL,
-    "disabled" BOOLEAN NOT NULL
+    "disabled" BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE article (
@@ -32,7 +32,7 @@ CREATE TABLE paragraph (
     article_id INT NOT NULL,
     paragraph TEXT NOT NULL,
     "order" INT NOT NULL,
-    CONSTRAINT fk_article_news_carrossel FOREIGN KEY(article_id) REFERENCES article(id)
+    CONSTRAINT fk_article_paragraph FOREIGN KEY(article_id) REFERENCES article(id)
 );
 
 CREATE TABLE front_page (

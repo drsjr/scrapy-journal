@@ -6,7 +6,7 @@ POSTGRES_HOSTNAME = "192.168.15.35"
 POSTGRES_PORT = 5432
 POSTGRES_USERNAME = "folha"
 POSTGRES_PASSWORD = "folha"
-POSTGRES_DBNAME = "folha"
+POSTGRES_DBNAME = "scrapy_jj"
 
 
 connection = psycopg2.connect(
@@ -17,14 +17,13 @@ connection = psycopg2.connect(
             port=POSTGRES_PORT)
 
 category_spider_api_call = 'curl http://192.168.15.35:6800/schedule.json -d project=journal -d spider=categories -d category={0}'
-category_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=categories -d category={0}'
-
 principal_spider_api_call = 'curl http://192.168.15.35:6800/schedule.json -d project=journal -d spider=principal'
-principal_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=principal'
 
 categories = [ 'ultimas', 'jundiai', 'opiniao', 'politica', 'economia', 'policia', 'esportes', 'cultura', 'hype']
-front_page_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=frontpage'
 
+category_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=categories -d category={0}'
+front_page_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=frontpage'
+principal_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=principal'
 article_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=article -d category={0}'
 
 
