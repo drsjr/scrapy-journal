@@ -1,7 +1,7 @@
 import os
 from typing import Dict
 import psycopg2
-import json
+from datetime import datetime, date
 
 POSTGRES_HOSTNAME = "192.168.15.35"
 POSTGRES_PORT = 5432
@@ -27,8 +27,6 @@ connection2 = psycopg2.connect(
 
 scrapy = connection.cursor()
 database = connection2.cursor()
-
-
 
 
 """
@@ -109,4 +107,82 @@ def insert_article_database(url: str, category: str, article: Dict):
             continue
 
     connection2.commit()
+
+
+"""
+    sh: 
+        python3 -c 'import etl_scrapy_database as etl; etl.insert_front_page()'
+"""
+def insert_front_page():
+
+    scrapy.execute("SELECT created_at, f.page FROM front_page f ORDER BY _id DESC LIMIT 1", [])
+    front_page = scrapy.fetchone()
+
+    INSERT_INTO_FRONT_PAGE = """
+        INSERT INTO front_page (created_at) VALUES (%s);
+    """
+
+    INSERT_INTO_NEWS_MAIN = """
+        INSERT INTO news_main (front_page_id, article_id) VALUES (%s, %s);
+    """
+
+    INSERT_INTO_NEWS_COLUMN = """
+        INSERT INTO news_column (front_page_id, article_id) VALUES (%s, %s);
+    """
+
+    INSERT_INTO_NEWS_CARROSSEL = """
+        INSERT INTO news_carrossel (front_page_id, article_id) VALUES (%s, %s);
+    """
+
+    SELECT_ARTICLE_BY_URL = """
+        SELECT id FROM article WHERE url = %s;
+    """
+
+    database.execute(INSERT_INTO_FRONT_PAGE, [front_page[0]]) 
+    database.execute("SELECT id from front_page WHERE created_at = %s", [front_page[0]])
+    front_page_id = database.fetchone()[0]
+
+    main_news = front_page[1]['main_news']
+
+    database.execute(SELECT_ARTICLE_BY_URL, [main_news["url"]])
+    article_id = database.fetchone()[0]
+    if verify_news_main(front_page_id, article_id):
+        database.execute(INSERT_INTO_NEWS_MAIN, [front_page_id, article_id])
+
+
+    #
+    # Column News Insert
+    #
+    for news in front_page[1]['column_news']:
+        database.execute(SELECT_ARTICLE_BY_URL, [news["url"]])
+        article_id = database.fetchone()[0]
+        if verify_news_column(front_page_id, article_id):
+            database.execute(INSERT_INTO_NEWS_COLUMN, [front_page_id, article_id])
+
+    #
+    # Carrossel News Insert
+    #
+    for news in front_page[1]['carrossel']:
+        database.execute(SELECT_ARTICLE_BY_URL, [news["url"]])
+        article_id = database.fetchone()[0]
+        if verify_news_column(front_page_id, article_id):
+            database.execute(INSERT_INTO_NEWS_CARROSSEL, [front_page_id, article_id])
+
+    connection2.commit()
+
+
+def verify_news_main(front_page_id: int, article_id: int) -> bool:
+    database.execute("SELECT id FROM news_main WHERE front_page_id = %s AND article_id = %s", [front_page_id, article_id])
+    value = database.fetchone()
+    return (value is None)
+
+def verify_news_column(front_page_id: int, article_id: int) -> bool:
+    database.execute("SELECT id FROM news_column WHERE front_page_id = %s AND article_id = %s", [front_page_id, article_id])
+    value = database.fetchone()
+    return (value is None)
+
+def verify_news_carrossel(front_page_id: int, article_id: int) -> bool:
+    database.execute("SELECT id FROM news_carrossel WHERE front_page_id = %s AND article_id = %s", [front_page_id, article_id])
+    value = database.fetchone()
+    return (value is None)
 
