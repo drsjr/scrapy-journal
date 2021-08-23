@@ -63,3 +63,16 @@ CREATE TABLE news_main (
     CONSTRAINT fk_front_page_news_main FOREIGN KEY(front_page_id) REFERENCES front_page(id),
     CONSTRAINT fk_article_news_main FOREIGN KEY(article_id) REFERENCES article(id)
 );
+
+
+--DELETE Order
+
+
+DELETE FROM news_main;
+DELETE FROM news_carrossel;
+DELETE FROM news_column;
+DELETE FROM front_page;
+DELETE FROM paragraph;
+DELETE FROM article;
+DELETE FROM category;
+DELETE FROM user;
