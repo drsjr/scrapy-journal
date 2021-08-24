@@ -2,11 +2,11 @@ import os
 import psycopg2
 import json
 
-POSTGRES_HOSTNAME = "192.168.15.35"
+POSTGRES_HOSTNAME = "172.17.0.2"
 POSTGRES_PORT = 5432
 POSTGRES_USERNAME = "folha"
 POSTGRES_PASSWORD = "folha"
-POSTGRES_DBNAME = "scrapy_jj"
+POSTGRES_DBNAME = "folha"
 
 
 connection = psycopg2.connect(

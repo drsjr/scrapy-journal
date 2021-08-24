@@ -12,11 +12,11 @@ BOT_NAME = 'journal'
 SPIDER_MODULES = ['journal.spiders']
 NEWSPIDER_MODULE = 'journal.spiders'
 
-POSTGRES_HOSTNAME = "192.168.15.35"
+POSTGRES_HOSTNAME = "172.17.0.2"
 POSTGRES_PORT = 5432
 POSTGRES_USERNAME = "folha"
 POSTGRES_PASSWORD = "folha"
-POSTGRES_DBNAME = "scrapy_jj"
+POSTGRES_DBNAME = "folha"
 
 ITEM_PIPELINES = { 
     'journal.pipelines.JournalPipeline': 200

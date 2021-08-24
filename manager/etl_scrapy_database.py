@@ -3,12 +3,12 @@ from typing import Dict
 import psycopg2
 from datetime import datetime, date
 
-POSTGRES_HOSTNAME = "192.168.15.35"
+POSTGRES_HOSTNAME = "172.17.0.2"
 POSTGRES_PORT = 5432
 POSTGRES_USERNAME = "folha"
 POSTGRES_PASSWORD = "folha"
-POSTGRES_SCRAPY_DBNAME = "scrapy_jj"
-POSTGRES_DATABASE_DBNAME = "database_jj"
+POSTGRES_SCRAPY_DBNAME = "folha"
+POSTGRES_DATABASE_DBNAME = "journal_jj"
 
 
 connection = psycopg2.connect(
@@ -138,8 +138,10 @@ def insert_front_page():
         SELECT id FROM article WHERE url = %s;
     """
 
-    database.execute(INSERT_INTO_FRONT_PAGE, [front_page[0]]) 
-    database.execute("SELECT id from front_page WHERE created_at = %s", [front_page[0]])
+    print(front_page)
+
+    database.execute(INSERT_INTO_FRONT_PAGE, [str(front_page[0])]) 
+    database.execute("SELECT id from front_page WHERE created_at = %s", [str(front_page[0])])
     front_page_id = database.fetchone()[0]
 
     main_news = front_page[1]['main_news']
