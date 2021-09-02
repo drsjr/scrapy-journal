@@ -10,20 +10,20 @@ class ArticleSpider(scrapy.Spider):
 
     def __init__(self, *args, **kwargs):
         super(ArticleSpider, self).__init__(*args, **kwargs)
-        self.category = kwargs.get('category')
+        self.path = kwargs.get('path')
 
     def start_requests(self):
-        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", self.category)
-        yield scrapy.Request(f'https://www.jj.com.br{self.category}')
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&", self.path)
+        yield scrapy.Request(f'https://www.jj.com.br{self.path}')
 
     def parse(self, response):
         item = ArticleItem()
 
-        item['url'] = self.category
+        item['url'] = self.path
         item['category'] = response.css('div.container h1::text').get(default='').strip()
 
         item['news'] = {
-            'url': self.category,
+            'url': self.path,
             'category': response.css('div.container h1::text').get(default='').strip(),
             'title': '',
             'subtitle': '',
@@ -35,8 +35,8 @@ class ArticleSpider(scrapy.Spider):
         if len(response.xpath('//section[@id="content"]')) > 0 and response.xpath('//section[@id="content"]')[0] is not None:
             content = response.xpath('//section[@id="content"]')[0]
 
-            item['news']['title'] = content.css('div.entry-title h2::text').get(default='')
-            item['news']['subtitle'] = content.css('div.entry-title h3::text').get(default='')
+            item['news']['title'] = content.css('div.entry-title h2::text').get(default='').strip()
+            item['news']['subtitle'] = content.css('div.entry-title h3::text').get(default='').strip()
 
             if len(content.css('ul.entry-meta li')) > 0:
                 _date = util.format_date(content.css('ul.entry-meta li::text')[0].get().strip())

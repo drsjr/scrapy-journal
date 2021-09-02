@@ -24,7 +24,7 @@ categories = [ 'ultimas', 'jundiai', 'opiniao', 'politica', 'economia', 'policia
 category_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=categories -d category={0}'
 front_page_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=frontpage'
 principal_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=principal'
-article_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=article -d category={0}'
+article_spider_api_call_local = 'curl http://localhost:6800/schedule.json -d project=journal -d spider=article -d path={0}'
 
 
 def call_all_categories():
