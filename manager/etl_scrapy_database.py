@@ -29,10 +29,20 @@ scrapy = connection.cursor()
 database = connection2.cursor()
 
 
-"""
-    sh: 
-        python3 -c 'import etl_scrapy_database as etl; etl.get_all_url()'
-"""
+
+# 
+#  sh: 
+#      python3 -c 'import etl_scrapy_database as etl; etl.all_calls()'
+# 
+def all_calls():
+    get_all_url()
+    insert_front_page()
+    
+
+#
+# sh: 
+#     python3 -c 'import etl_scrapy_database as etl; etl.get_all_url()'
+#
 def get_all_url():
     scrapy.execute("SELECT url FROM article;", [])
     all_urls = scrapy.fetchall()
@@ -42,14 +52,11 @@ def get_all_url():
             get_article_from_url(url[0])
 
 
-    scrapy.close()
-    connection.close()
 
-
-"""
-    sh: 
-        python3 -c 'import etl_scrapy_database as etl; etl.get_article_from_url("/jundiai/2021/08/130082-nova-ubs-jardim-do-lago-tera-atendimento-a-populacao-geral.html")'
-"""
+# 
+#  sh: 
+#      python3 -c 'import etl_scrapy_database as etl; etl.get_article_from_url("/jundiai/2021/08/130082-nova-ubs-jardim-do-lago-tera-atendimento-a-populacao-geral.html")'
+# 
 def get_article_from_url(url: str):
     if (verify_url(url)):
         scrapy.execute("SELECT * FROM article WHERE url = %s;", [url])
@@ -60,10 +67,10 @@ def get_article_from_url(url: str):
         pass
 
 
-"""
-    sh: 
-        python3 -c 'import etl_scrapy_database as etl; etl.verify_url("/jundiai/2021/08/130082-nova-ubs-jardim-do-lago-tera-atendimento-a-populacao-geral.html")'
-"""
+#
+# sh: 
+#     python3 -c 'import etl_scrapy_database as etl; etl.verify_url("/jundiai/2021/08/130082-nova-ubs-jardim-do-lago-tera-atendimento-a-populacao-geral.html")'
+#
 def verify_url(url: str) -> bool:
     database.execute("SELECT url FROM article WHERE url = %s;", [url])
     value = database.fetchone()
@@ -76,7 +83,6 @@ def insert_article_database(url: str, category: str, article: Dict):
 
     database.execute("SELECT id FROM category WHERE name = %s;", [category])
     category_id = database.fetchone()[0]
-    print("&&&&&&&&&&&&&&&&&&", category_id)
 
 
     INSERT_INTO_ARTICLE = """
@@ -89,7 +95,6 @@ def insert_article_database(url: str, category: str, article: Dict):
 
     database.execute("SELECT id FROM article WHERE url = %s;", [url])
     article_id = database.fetchone()[0]
-    print("$$$$$$$$$$$$$$$$$$$$$", article_id)
 
 
     INSERT_INTO_PARAGRAPH = """
@@ -100,7 +105,6 @@ def insert_article_database(url: str, category: str, article: Dict):
     for p in article['paragraphs']:
         if p is not None and len(p.strip()) > 0:
             database.execute(INSERT_INTO_PARAGRAPH, [article_id, count, p])
-            print("$$$$$$$$$$$$$$$$$$$$$", count, p)
             count = count + 1
 
         else:
@@ -109,10 +113,10 @@ def insert_article_database(url: str, category: str, article: Dict):
     connection2.commit()
 
 
-"""
-    sh: 
-        python3 -c 'import etl_scrapy_database as etl; etl.insert_front_page()'
-"""
+#
+# sh: 
+#     python3 -c 'import etl_scrapy_database as etl; etl.insert_front_page()'
+#
 def insert_front_page():
 
     scrapy.execute("SELECT created_at, f.page FROM front_page f ORDER BY _id DESC LIMIT 1", [])
@@ -135,19 +139,19 @@ def insert_front_page():
     """
 
     SELECT_ARTICLE_BY_URL = """
-        SELECT id FROM article WHERE url = %s;
-    """
+        SELECT id FROM article WHERE url = %s;"""
 
-    print(front_page)
 
     database.execute(INSERT_INTO_FRONT_PAGE, [str(front_page[0])]) 
     database.execute("SELECT id from front_page WHERE created_at = %s", [str(front_page[0])])
     front_page_id = database.fetchone()[0]
 
-    main_news = front_page[1]['main_news']
 
+    main_news = front_page[1]['main_news']
     database.execute(SELECT_ARTICLE_BY_URL, [main_news["url"]])
     article_id = database.fetchone()[0]
+
+    
     if verify_news_main(front_page_id, article_id):
         database.execute(INSERT_INTO_NEWS_MAIN, [front_page_id, article_id])
 
