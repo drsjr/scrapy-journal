@@ -36,8 +36,7 @@ def list_jobs():
     # curl http://localhost:6800/listjobs.json?project=journal | python3 -m json.tool
     #
     list_jobs_request = requests.get(LIST_JOBS)
-    value = list_jobs_request.json()
-    print(value)
+    return list_jobs_request.json()
 
 
 def call_all_categories(categories: List[str]):
