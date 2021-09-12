@@ -5,7 +5,7 @@
 
 
 # useful for handling different item types with a single interface
-from journal.items import ArticleItem, NewsItem, PrincipalItem, FrontItem
+from journal.items import ArticleItem, CategoryItem, NewsItem, PrincipalItem, FrontItem
 import psycopg2
 import json
 import journal.settings as settings
@@ -36,6 +36,11 @@ class JournalPipeline:
                 self.cursor.execute(
                     "INSERT INTO article (url, category, created_at, article) values (%s, %s, %s, %s);", 
                     [item['url'], item['category'], item['created_at'], json.dumps(dict(item['news']))])
+
+        if type(item) is CategoryItem:
+                for news in item["news"]:
+                    self.cursor.execute(
+                        "INSERT INTO news (url) values (%s);", [news["url"]])
 
         self.connection.commit()
         return item

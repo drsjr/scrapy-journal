@@ -81,6 +81,19 @@ def call_article_from_front_page():
         article_request = requests.post("http://localhost:6800/schedule.json", data=payload)
         print(article_request.json())
 
+
+    #cursor.execute("SELECT n.url FROM news n", [])
+    #categories_url = cursor.fetchall()
+    #for url in categories_url:
+    #    #
+    #    # curl http://localhost:6800/schedule.json -d project=journal -d spider=article -d path={0} | python3 -m json.tool
+    #    #
+    #    payload = [('project', 'journal'), ('spider', 'article'), ('path', url)]
+    #    article_request = requests.post("http://localhost:6800/schedule.json", data=payload)
+    #    print(article_request.json())
+
+
+
     cursor.close()
     connection.close()
 

@@ -32,5 +32,9 @@ class FrontItem(scrapy.Item):
     carrossel = scrapy.Field()
     column_news = scrapy.Field()
 
+class CategoryItem(scrapy.Item):
+    news = scrapy.Field()
+
+
 
 

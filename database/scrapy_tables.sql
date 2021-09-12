@@ -19,3 +19,9 @@ CREATE TABLE front_page (
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     "page" JSONB NOT NULL
 );
+
+CREATE TABLE news (
+    _id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    "url" TEXT NOT NULL
+);

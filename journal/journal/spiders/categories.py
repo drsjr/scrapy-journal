@@ -1,4 +1,4 @@
-from journal.items import NewsItem
+from journal.items import CategoryItem
 import journal.date_util as util
 import scrapy
 import locale
@@ -18,23 +18,15 @@ class CategoriesSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        item = NewsItem()
-        item["category"] = self.category
+        item = CategoryItem()
         item["news"] = []
         divs = response.css('div.clearfix')
         content = divs[0]
         for content in divs:
-            news = {
-                "url_path": content.css('div.entry-title h2 a').xpath('@href').get(),
-                "url_image": content.css('div.entry-image a img').xpath('@src').get(),
-                "news_title": content.css('div.entry-title h2 a::text').get(),
-                "news_time": util.format_date(content.css('ul.entry-meta li::text').get()),
-                "news_subtitle": content.css('div.entry-content p::text').get()
-            }
-
-            if news["url_path"] is None:
-                continue
-
-            item["news"].append(news)
+            if content.css('div.entry-title h2 a').xpath('@href').get() is not None:
+                news = {
+                    "url": content.css('div.entry-title h2 a').xpath('@href').get()
+                }
+                item["news"].append(news)
 
         yield item

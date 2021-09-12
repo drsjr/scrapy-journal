@@ -8,7 +8,13 @@ POSTGRES_PORT = 5432
 POSTGRES_USERNAME = "folha"
 POSTGRES_PASSWORD = "folha"
 POSTGRES_SCRAPY_DBNAME = "folha"
-POSTGRES_DATABASE_DBNAME = "journal_jj"
+
+
+POSTGRES_HOSTNAME_T = "172.17.0.2"
+POSTGRES_PORT_T = 5432
+POSTGRES_USERNAME_T = "folha"
+POSTGRES_PASSWORD_T = "folha"
+POSTGRES_DATABASE_DBNAME_T = "journal_jj"
 
 
 connection = psycopg2.connect(
@@ -19,11 +25,11 @@ connection = psycopg2.connect(
             port=POSTGRES_PORT)
 
 connection2 = psycopg2.connect(
-            host=POSTGRES_HOSTNAME, 
-            user=POSTGRES_USERNAME, 
-            password=POSTGRES_PASSWORD, 
-            dbname=POSTGRES_DATABASE_DBNAME,
-            port=POSTGRES_PORT)
+            host=POSTGRES_HOSTNAME_T, 
+            user=POSTGRES_USERNAME_T, 
+            password=POSTGRES_PASSWORD_T, 
+            dbname=POSTGRES_DATABASE_DBNAME_T,
+            port=POSTGRES_PORT_T)
 
 scrapy = connection.cursor()
 database = connection2.cursor()
@@ -49,6 +55,7 @@ def get_all_url():
     
     for url in all_urls:
         if url[0] is not None:
+            print(url[0])
             get_article_from_url(url[0])
 
 
@@ -58,11 +65,12 @@ def get_all_url():
 #      python3 -c 'import etl_scrapy_database as etl; etl.get_article_from_url("/jundiai/2021/08/130082-nova-ubs-jardim-do-lago-tera-atendimento-a-populacao-geral.html")'
 # 
 def get_article_from_url(url: str):
+    print("verify::", str(verify_url(url)))
     if (verify_url(url)):
         scrapy.execute("SELECT * FROM article WHERE url = %s;", [url])
         article = scrapy.fetchone()
         insert_article_database(article[1], article[2], article[4])
-
+        print("INSERTED::", url)
     else:
         pass
 
@@ -74,6 +82,7 @@ def get_article_from_url(url: str):
 def verify_url(url: str) -> bool:
     database.execute("SELECT url FROM article WHERE url = %s;", [url])
     value = database.fetchone()
+    print("verify::", url, "\n")
     return (value is None)
 
 
