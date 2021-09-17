@@ -25,3 +25,9 @@ CREATE TABLE news (
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     "url" TEXT NOT NULL
 );
+
+
+DELETE FROM article;
+DELETE FROM category_news;
+DELETE FROM front_page;
+DELETE FROM news;
