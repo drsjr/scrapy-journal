@@ -2,9 +2,6 @@ import etl_scrapy_database as etl
 import manage
 import time
 
-
-
-
 #
 # python3 -c 'import worker; worker.reload_news()'
 #
@@ -23,10 +20,12 @@ def reload_news():
     etl.all_calls()
 
 
+
 def thread_process():
     l = True
 
     while l is True:
-        reload_news()
-        #Send Message
-        time.sleep(600)
+        #reload_news()
+        print("Niceeeeee")
+        time.sleep(10)
+
