@@ -1,68 +1,107 @@
-from typing import List
-import psycopg2
+import time
 import manage_scrapy as scrapy
+from etl.database_prod import ProdDatabase
+from etl.database_scrapy import ScrapyDatabase
 
-POSTGRES_HOSTNAME = "172.17.0.2"
-POSTGRES_PORT = 5432
-POSTGRES_USERNAME = "folha"
-POSTGRES_PASSWORD = "folha"
-POSTGRES_DBNAME = "folha"
-
-
-connection = psycopg2.connect(
-            host=POSTGRES_HOSTNAME, 
-            user=POSTGRES_USERNAME, 
-            password=POSTGRES_PASSWORD, 
-            dbname=POSTGRES_DBNAME,
-            port=POSTGRES_PORT)
-
-all_categories = ["ultimas", "jundiai", "opiniao", "politica", "economia", "policia", "esportes", "cultura", "hype"]
+db_prod = ProdDatabase()
+db_scrapy = ScrapyDatabase()
 
 
-def call_all_categories(categories: List[str]):
-    for c in categories:
-        scrapy.request_crawling_for_category(c)
-
-
-def call_front_page():
+def call_crawling_front_page():
     scrapy.request_crawling_for_front_page()
     
+    waiting()
 
-def call_article_from_front_page():
-    cursor = connection.cursor()
+    front = db_scrapy.get_new_url_from_front_page()
 
-    cursor.execute("SELECT f.page FROM front_page f ORDER BY _id DESC LIMIT 1", [])
+    scrapy.request_crawling_for_article(article_path=front["main"])
 
-    value = cursor.fetchone()[0]
+    for u in front["column"]:
+        scrapy.request_crawling_for_article(article_path=u)
 
-    news_list_url = []
-    news_list_url.append(value['main_news']['url'])
-    for news in value['column_news']:
-        news_list_url.append(news['url'])
+    for u in front["carrossel"]:
+        scrapy.request_crawling_for_article(article_path=u)
 
-    for news in value['carrossel']:
-        news_list_url.append(news['url'])
+    waiting()
 
-    for url in news_list_url:
-        scrapy.request_crawling_for_article(url)
+    call_insert_article_and_paragraph(url=front["main"])
 
+    for u in front["column"]:
+        call_insert_article_and_paragraph(url=u)
 
-        #cursor.execute("SELECT n.url FROM news n", [])
-        #categories_url = cursor.fetchall()
-        #for url in categories_url:
-        #    scrapy.request_crawling_for_article(url)
+    for u in front["carrossel"]:
+        call_insert_article_and_paragraph(url=u)
 
+    waiting()
 
-    cursor.close()
-    connection.close()
+    call_etl_front_page()
 
 
-def all_calls():
-    #
-    # python3 -c 'import manage; manage.all_calls()'
-    #
-    call_front_page()
-    call_all_categories(all_categories)
-    call_article_from_front_page()
+    db_prod.connection.commit()
 
+
+
+def call_etl_front_page():
+    front = db_scrapy.get_new_url_from_front_page()
+
+    db_prod.insert_front_page(front["created_at"])
+
+
+    front_page_id = db_prod.get_front_page_id()
+
+    article = db_prod.get_article_by_url(url=front["main"])
+
+    print("##########################", front_page_id, article[0])
+
+    db_prod.insert_main_news(front_page_id=front_page_id, article_id=article[0])
+
+    for url in front["column"]:
+        a = db_prod.get_article_by_url(url=url)
+        db_prod.insert_news_carrossel(front_page_id=front_page_id, article_id=a[0])
+
+    for url in front["carrossel"]:
+        a = db_prod.get_article_by_url(url=url)
+        db_prod.insert_news_column(front_page_id=front_page_id, article_id=a[0])
+
+
+# (257,
+# '/politica/2021/09/134797-projeto-combate-a-incendio-florestais-na-serra-do-japi-e-finalista-para-recursos-de-emenda-parlamentar.html',
+# 'Política',
+# datetime.datetime(2021, 9, 19, 17, 16),
+# {'url': '/politica/2021/09/134797-projeto-combate-a-incendio-florestais-na-serra-do-japi-e-finalista-para-recursos-de-emenda-parlamentar.html',
+#  'time': '2021-09-19 17:16:00',
+#  'title': 'Projeto Combate a Incêndio Florestais na Serra do Japi é finalista para recursos de emenda parlamentar',
+#  'category': 'Política',
+#  'subtitle': 'Segundo informado no site da deputada, foram mais de 20 mil voto',
+#  'url_image': 'https://www.jj.com.br/_midias/jpg/2021/09/19/600x450/1_fogo_na_serra_4-526155.jpeg',
+#  'paragraphs': []})
+def call_insert_article_and_paragraph(url: str):
+    article = db_scrapy.get_article_by_url(url)
+
+    category_id = db_prod.get_category_by_name(article[2])
+    
+    art = article[4]
+
+    db_prod.insert_article(
+        url=art["url"],
+        title=art["title"],
+        subtitle=art["subtitle"],
+        image=art["url_image"],
+        created_at=str(article[3]),
+        category_id=category_id)
+
+    article = db_prod.get_article_by_url(art["url"])
+
+    order = 1
+
+    for paragraph in art["paragraphs"]:
+        db_prod.insert_paragraph(article_id=article[0], order=order, paragraph=paragraph)
+        order = order + 1
+
+def waiting():
+    l = False
+    while l is False:
+        time.sleep(10)
+        print(scrapy.get_all_schedule_job())
+        l = scrapy.verify_all_jobs_finished()
 

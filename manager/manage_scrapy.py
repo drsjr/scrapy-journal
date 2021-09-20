@@ -7,6 +7,10 @@ SCHEDULE_RESOURCE = "http://localhost:6800/schedule.json"
 LIST_JOB_RESOURCE = "http://localhost:6800/listjobs.json?project=journal"
 
 
+def verify_all_jobs_finished() -> bool:
+    jobs = get_all_schedule_job()
+    return len(jobs["pending"]) == 0 and len(jobs["running"]) == 0
+
 def get_all_schedule_job():
     #
     # curl http://localhost:6800/listjobs.json?project=journal | python3 -m json.tool
