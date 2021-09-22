@@ -8,6 +8,7 @@ db_scrapy = ScrapyDatabase()
 
 
 def call_crawling_front_page():
+    print("start::call_crawling_front_page")
     scrapy.request_crawling_for_front_page()
     
     waiting()
@@ -24,24 +25,29 @@ def call_crawling_front_page():
 
     waiting()
 
-    call_insert_article_and_paragraph(url=front["main"])
+    if db_prod.verify_article(u):
+        call_insert_article_and_paragraph(url=front["main"])
 
     for u in front["column"]:
-        call_insert_article_and_paragraph(url=u)
+        if db_prod.verify_article(u):
+            call_insert_article_and_paragraph(url=u)
 
     for u in front["carrossel"]:
-        call_insert_article_and_paragraph(url=u)
-
-    waiting()
+        if db_prod.verify_article(u):
+            call_insert_article_and_paragraph(url=u)
 
     call_etl_front_page()
 
-
     db_prod.connection.commit()
+    print("end::call_crawling_front_page")
+
+
 
 
 
 def call_etl_front_page():
+    print("start::call_etl_front_page")
+
     front = db_scrapy.get_new_url_from_front_page()
 
     db_prod.insert_front_page(front["created_at"])
@@ -51,7 +57,8 @@ def call_etl_front_page():
 
     article = db_prod.get_article_by_url(url=front["main"])
 
-    print("##########################", front_page_id, article[0])
+    print("##########################", front_page_id)
+    print("##########################", article)
 
     db_prod.insert_main_news(front_page_id=front_page_id, article_id=article[0])
 
@@ -62,6 +69,10 @@ def call_etl_front_page():
     for url in front["carrossel"]:
         a = db_prod.get_article_by_url(url=url)
         db_prod.insert_news_column(front_page_id=front_page_id, article_id=a[0])
+        
+    print("end::call_etl_front_page")
+
+
 
 
 # (257,
@@ -76,32 +87,37 @@ def call_etl_front_page():
 #  'url_image': 'https://www.jj.com.br/_midias/jpg/2021/09/19/600x450/1_fogo_na_serra_4-526155.jpeg',
 #  'paragraphs': []})
 def call_insert_article_and_paragraph(url: str):
-    article = db_scrapy.get_article_by_url(url)
+    print("start::call_insert_article_and_paragraph")
 
-    category_id = db_prod.get_category_by_name(article[2])
-    
-    art = article[4]
+    if db_prod.verify_article(url):
+        article = db_scrapy.get_article_by_url(url)
 
-    db_prod.insert_article(
-        url=art["url"],
-        title=art["title"],
-        subtitle=art["subtitle"],
-        image=art["url_image"],
-        created_at=str(article[3]),
-        category_id=category_id)
+        category_id = db_prod.get_category_by_name(article[2])
+        
+        art = article[4]
 
-    article = db_prod.get_article_by_url(art["url"])
+        db_prod.insert_article(
+            url=art["url"],
+            title=art["title"],
+            subtitle=art["subtitle"],
+            image=art["url_image"],
+            created_at=str(article[3]),
+            category_id=category_id)
 
-    order = 1
+        article = db_prod.get_article_by_url(art["url"])
 
-    for paragraph in art["paragraphs"]:
-        db_prod.insert_paragraph(article_id=article[0], order=order, paragraph=paragraph)
-        order = order + 1
+        order = 1
+
+        for paragraph in art["paragraphs"]:
+            db_prod.insert_paragraph(article_id=article[0], order=order, paragraph=paragraph)
+            order = order + 1
+        print("end::call_insert_article_and_paragraph")
+
 
 def waiting():
     l = False
     while l is False:
         time.sleep(10)
-        print(scrapy.get_all_schedule_job())
+        #print(scrapy.get_all_schedule_job())
         l = scrapy.verify_all_jobs_finished()
 

@@ -106,6 +106,11 @@ class ProdDatabase():
 
 ##### VERIFY
 
+    def verify_article(self, url: str) -> bool:
+        self.get_cursor().execute(QUERY_VERIFY_ARTICLE_BY_URL, [url])
+        value = self.get_cursor().fetchone()
+        return (value is None)
+
     def verify_news_main(self, front_page_id: int, article_id: int) -> bool:
         self.get_cursor().execute(QUERY_VERIFY_NEWS_MAIN, [front_page_id, article_id])
         value = self.get_cursor().fetchone()
