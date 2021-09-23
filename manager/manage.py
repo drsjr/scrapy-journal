@@ -23,6 +23,9 @@ def call_crawling_front_page():
     for u in front["carrossel"]:
         scrapy.request_crawling_for_article(article_path=u)
 
+    for u in front["other"]:
+        scrapy.request_crawling_for_article(article_path=u)
+
     waiting()
 
     if db_prod.verify_article(u):
@@ -33,6 +36,10 @@ def call_crawling_front_page():
             call_insert_article_and_paragraph(url=u)
 
     for u in front["carrossel"]:
+        if db_prod.verify_article(u):
+            call_insert_article_and_paragraph(url=u)
+
+    for u in front["other"]:
         if db_prod.verify_article(u):
             call_insert_article_and_paragraph(url=u)
 
@@ -57,9 +64,6 @@ def call_etl_front_page():
 
     article = db_prod.get_article_by_url(url=front["main"])
 
-    print("##########################", front_page_id)
-    print("##########################", article)
-
     db_prod.insert_main_news(front_page_id=front_page_id, article_id=article[0])
 
     for url in front["column"]:
@@ -69,6 +73,10 @@ def call_etl_front_page():
     for url in front["carrossel"]:
         a = db_prod.get_article_by_url(url=url)
         db_prod.insert_news_column(front_page_id=front_page_id, article_id=a[0])
+
+    for url in front["other"]:
+        a = db_prod.get_article_by_url(url=url)
+        db_prod.insert_news_other(front_page_id=front_page_id, article_id=a[0])
         
     print("end::call_etl_front_page")
 

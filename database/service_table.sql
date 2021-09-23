@@ -40,6 +40,14 @@ CREATE TABLE front_page (
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE news_other (
+    id SERIAL PRIMARY KEY,
+    front_page_id INT NOT NULL,
+    article_id INT NOT NULL,
+    CONSTRAINT fk_front_page_news_other FOREIGN KEY(front_page_id) REFERENCES front_page(id),
+    CONSTRAINT fk_article_news_other FOREIGN KEY(article_id) REFERENCES article(id)
+);
+
 CREATE TABLE news_column (
     id SERIAL PRIMARY KEY,
     front_page_id INT NOT NULL,
@@ -71,6 +79,7 @@ CREATE TABLE news_main (
 DELETE FROM news_main;
 DELETE FROM news_carrossel;
 DELETE FROM news_column;
+DELETE FROM news_other;
 DELETE FROM front_page;
 DELETE FROM paragraph;
 DELETE FROM article;

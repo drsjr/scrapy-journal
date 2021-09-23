@@ -12,18 +12,20 @@ class FrontPageSpider(scrapy.Spider):
     def parse(self, response):
 
         content = response.css('section div.content-wrap')[0]
-        row = content.css('div.row')[0]
+        main = content.css('div.row')[0]
+        other = content.css('div.row')[3]
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$ row::", len(content.css('div.row')))
 
         main_page = FrontItem()
         main_page["main_news"] = dict()
         main_page["carrossel"] = []
         main_page["column_news"] = []
 
-        main_page["main_news"]["url"] = row.css('div.col_full h2 a').xpath('@href').get()
+        main_page["main_news"]["url"] = main.css('div.col_full h2 a').xpath('@href').get()
 
         # Scrapy News Column Main Page
         
-        column_news = row.css('div.col_one_third div.ipost')
+        column_news = main.css('div.col_one_third div.ipost')
         for item in column_news:
             news = {
                 "url": item.css('div.entry-title h3 a').xpath('@href').get() 
@@ -32,12 +34,28 @@ class FrontPageSpider(scrapy.Spider):
 
         # Scrapy News Column Main Page
 
-        carrossel = row.css('div.owl-stage-outer div.oc-item')
+        carrossel = main.css('div.owl-stage-outer div.oc-item')
         for item in carrossel:
             news = {
                 "url": item.css('div.portfolio-image a').xpath('@href').get()
             }
             main_page["carrossel"].append(news)
+
+        # Scrapy News Column Main Page
+
+
+        carrossel = main.css('div.owl-stage-outer div.oc-item')
+        for item in carrossel:
+            news = {
+                "url": item.css('div.portfolio-image a').xpath('@href').get()
+            }
+            main_page["carrossel"].append(news)
+
+        # Scrapy News Column Main Page
+
+        other_news = list(set(other.css('a').xpath('@href').getall()))
+
+        main_page["other_news"] = other_news
 
         yield main_page
 

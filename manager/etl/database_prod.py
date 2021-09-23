@@ -49,6 +49,10 @@ INSERT_INTO_NEWS_CARROSSEL = """
     INSERT INTO news_carrossel (front_page_id, article_id) VALUES (%s, %s);
 """
 
+INSERT_INTO_NEWS_OTHER = """
+    INSERT INTO news_other (front_page_id, article_id) VALUES (%s, %s);
+"""
+
 SELECT_ARTICLE_BY_URL = """
     SELECT id FROM article WHERE url = %s;
 """
@@ -145,4 +149,7 @@ class ProdDatabase():
 
     def insert_news_carrossel(self, front_page_id: int, article_id: int):
         self.get_cursor().execute(INSERT_INTO_NEWS_CARROSSEL, [front_page_id, article_id])
+
+    def insert_news_other(self, front_page_id: int, article_id: int):
+        self.get_cursor().execute(INSERT_INTO_NEWS_OTHER, [front_page_id, article_id])
         

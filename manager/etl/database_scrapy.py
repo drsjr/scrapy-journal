@@ -55,6 +55,7 @@ class ScrapyDatabase():
             "main": f[1]["main_news"]["url"], 
             "column": [i["url"] for i in f[1]["column_news"]], 
             "carrossel": [i["url"] for i in f[1]["carrossel"]], 
+            "other": f[1]["other_news"], 
             "created_at": str(f[0]) 
             }
     
