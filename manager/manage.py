@@ -28,7 +28,7 @@ def call_crawling_front_page():
 
     waiting()
 
-    if db_prod.verify_article(u):
+    if db_prod.verify_article(front["main"]):
         call_insert_article_and_paragraph(url=front["main"])
 
     for u in front["column"]:
@@ -49,20 +49,23 @@ def call_crawling_front_page():
     print("end::call_crawling_front_page")
 
 
-
-
-
 def call_etl_front_page():
     print("start::call_etl_front_page")
 
     front = db_scrapy.get_new_url_from_front_page()
 
+    print("call_etl_front_page::", front)
+
     db_prod.insert_front_page(front["created_at"])
 
-
     front_page_id = db_prod.get_front_page_id()
+    
+    print("call_etl_front_page::", front_page_id)
 
     article = db_prod.get_article_by_url(url=front["main"])
+
+    print("call_etl_front_page::\"", front["main"], "\"")
+
 
     db_prod.insert_main_news(front_page_id=front_page_id, article_id=article[0])
 
@@ -79,8 +82,6 @@ def call_etl_front_page():
         db_prod.insert_news_other(front_page_id=front_page_id, article_id=a[0])
         
     print("end::call_etl_front_page")
-
-
 
 
 # (257,
